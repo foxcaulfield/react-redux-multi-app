@@ -1,31 +1,18 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
-import { sub } from 'date-fns';
 
-let initialState = [
-  {
-    id: '1',
-    title: 'First!',
-    content: 'Hello',
-    date: sub(new Date(), { minutes: 10 }).toISOString(),
-  },
-  {
-    id: '2',
-    title: 'Second!',
-    content: 'Hi',
-    date: sub(new Date(), { minutes: 5 }).toISOString(),
-  },
-];
+let initialState = {
+  posts: [],
+  status: 'idle',
+  error: null,
+};
 
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    // postAdded(state, action) {
-    //   state.push(action.payload);
-    // },
     postAdded: {
       reducer(state, action) {
-        state.push(action.payload);
+        state.posts.push(action.payload);
       },
       prepare(title, content, userId) {
         return {
@@ -35,6 +22,13 @@ const postsSlice = createSlice({
             title,
             content,
             user: userId,
+            reactions: {
+              thumbsUp: 0,
+              hooray: 0,
+              heart: 0,
+              rocket: 0,
+              eyes: 0,
+            },
           },
           meta: 'i am a meta string',
         };
@@ -42,20 +36,28 @@ const postsSlice = createSlice({
     },
     postUpdated(state, action) {
       const { id, title, content } = action.payload;
-      let existingPost = state.find((post) => post.id === id);
+      let existingPost = state.posts.find((post) => post.id === id);
 
       if (existingPost) {
         existingPost.title = title;
         existingPost.content = content;
       }
     },
+    reactionAdded(state, action) {
+      const { postId, reaction } = action.payload;
+      const existingPost = state.posts.find((post) => post.id === postId);
+      if (existingPost) {
+        existingPost.reactions[reaction]++;
+      }
+    },
   },
 });
 
-export const { postAdded, postUpdated } = postsSlice.actions;
+export const { postAdded, postUpdated, reactionAdded } = postsSlice.actions;
 
-export const selectPostsList = (state) => state.posts;
+export const selectPostsList = (state) => state.posts.posts;
 export const selectPostById = (id) => (state) =>
-  state.posts.find((post) => post.id === id);
+  state.posts.posts.find((post) => post.id === id);
+// export const selectPostById = (state, postId) => state.posts.posts.find((post) => post.id === postId);
 
 export default postsSlice.reducer;
