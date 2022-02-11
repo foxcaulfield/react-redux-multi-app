@@ -6,9 +6,14 @@ import { store } from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
+import { worker } from "./api/server";
 
-// import state, { addPost, subscribe, updatePostTextarea } from "./redux/state";
 
+
+// Wrap app rendering so we can wait for the mock API to initialize
+async function start() {
+  // Start our mock API server
+  await worker.start({ onUnhandledRequest: 'bypass' })
 
 ReactDOM.render(
   <Router>
@@ -20,7 +25,9 @@ ReactDOM.render(
   </Router>,
   document.getElementById("root")
 );
+}
 
+start()
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
