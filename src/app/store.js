@@ -5,6 +5,7 @@ import invoicesReducer from '../components/invoices/invoicesSlice';
 import messagesReducer from '../components/messages/messagesSlice';
 import profileReducer from '../components/profile/profileSlice';
 import postsReducer from '../features/posts/postsSlice';
+import usersReducer from '../features/users/usersSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     messages: messagesReducer,
     profile: profileReducer,
     posts: postsReducer,
+    users: usersReducer,
   },
 });
