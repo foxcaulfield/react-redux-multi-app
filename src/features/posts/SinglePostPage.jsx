@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import QueryNavLink from "../../components/QueryNavLink";
 import PostAuthor from "./PostAuthor";
 import TimeAgo from "./TimeAgo";
+import ReactionButtons from "./ReactionButtons";
 
 const SinglePostPage = (props) => {
   let params = useParams();
@@ -26,6 +27,8 @@ const SinglePostPage = (props) => {
         <p className="post-content">{post.content}</p>
         <PostAuthor userId={post.user} />
         <TimeAgo timestamp={post.date}></TimeAgo>
+        <ReactionButtons post={post}></ReactionButtons>
+
         <QueryNavLink to={`/editPost/${postId}`} className="button">Edit Post</QueryNavLink>
         <QueryNavLink to={`/posts`} className="button">Return to Posts page</QueryNavLink>
       </article>

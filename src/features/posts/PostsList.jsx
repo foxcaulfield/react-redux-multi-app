@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import QueryNavLink from '../../components/QueryNavLink';
 import PostAuthor from './PostAuthor';
 import { selectPostsList } from './postsSlice';
-import TimeAgo from "./TimeAgo";
+import TimeAgo from './TimeAgo';
+import ReactionButtons from './ReactionButtons';
 
 const PostsList = () => {
   const posts = useSelector(selectPostsList);
@@ -13,7 +14,7 @@ const PostsList = () => {
   });
 
   let renderedPosts = orederedPosts.map((post) => {
-    console.log('post', post)
+    console.log('post', post);
     return (
       <article className="post-excerpt" key={post.id}>
         <h3>{post.title}</h3>
@@ -23,6 +24,7 @@ const PostsList = () => {
         </p>
         <PostAuthor userId={post.user} />
         <TimeAgo timestamp={post.date}></TimeAgo>
+        <ReactionButtons post={post}></ReactionButtons>
         <QueryNavLink
           to={`/readPost/${post.id}`}
           className="button muted-button"
