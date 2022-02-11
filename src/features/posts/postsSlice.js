@@ -1,10 +1,17 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, nanoid } from '@reduxjs/toolkit';
+import { client } from '../../api/client';
 
 let initialState = {
   posts: [],
   status: 'idle',
   error: null,
 };
+
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
+  const response = await client.get('/fakeApi/posts');
+  console.log('response.data', response.data);
+  return response.data;
+});
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -51,6 +58,21 @@ const postsSlice = createSlice({
       }
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPosts.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.posts = state.posts.concat(action.payload);
+      })
+      .addCase(fetchPosts.rejected, (state, action) => {
+        state.status = 'failed';
+        console.log('action.error.message', action.error.message);
+        state.error = action.error.message;
+      });
+  },
 });
 
 export const { postAdded, postUpdated, reactionAdded } = postsSlice.actions;
@@ -59,5 +81,7 @@ export const selectPostsList = (state) => state.posts.posts;
 export const selectPostById = (id) => (state) =>
   state.posts.posts.find((post) => post.id === id);
 // export const selectPostById = (state, postId) => state.posts.posts.find((post) => post.id === postId);
+export const selectPostsStatus = (state) => state.posts.status;
+export const selectPostsError = (state) => state.posts.error;
 
 export default postsSlice.reducer;
