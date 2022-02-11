@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { postAdded } from './postsSlice';
 
 const AddPostForm = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-
+  const [userId, setUserId] = useState('second');
   const [isInvalidWarnShow, setIsInvalidWarnShow] = useState(false);
 
   const dispatch = useDispatch();
+
+  
 
   const onTitleChanged = (e) => {
     setTitle(e.target.value);

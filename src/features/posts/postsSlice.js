@@ -17,12 +17,13 @@ const postsSlice = createSlice({
         console.log(`action`, action)
         state.push(action.payload);
       },
-      prepare(title, content) {
+      prepare(title, content, userId) {
         return {
           payload: {
             id: nanoid(),
             title,
             content,
+            user: userId
           },
           meta: "i am a meta string"
         };
