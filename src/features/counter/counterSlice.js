@@ -54,7 +54,7 @@ export const counterSlice = createSlice({
   },
 });
 
-console.log(counterSlice)
+// console.log(counterSlice)
 
 export const { increment, decrement, incrementByAmount } = counterSlice.actions;
 
