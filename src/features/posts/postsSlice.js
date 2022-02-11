@@ -13,34 +13,44 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return response.data;
 });
 
+export const addNewPost = createAsyncThunk(
+  'posts/addNewPost',
+  async (initialPost) => {
+    console.log('initialPost', initialPost)
+    const response = await client.post('/fakeApi/posts', initialPost);
+    console.log('response', response)
+    return response.data;
+  }
+);
+
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postAdded: {
-      reducer(state, action) {
-        state.posts.push(action.payload);
-      },
-      prepare(title, content, userId) {
-        return {
-          payload: {
-            id: nanoid(),
-            date: new Date().toISOString(),
-            title,
-            content,
-            user: userId,
-            reactions: {
-              thumbsUp: 0,
-              hooray: 0,
-              heart: 0,
-              rocket: 0,
-              eyes: 0,
-            },
-          },
-          meta: 'i am a meta string',
-        };
-      },
-    },
+    // postAdded: {
+    //   reducer(state, action) {
+    //     state.posts.push(action.payload);
+    //   },
+    //   prepare(title, content, userId) {
+    //     return {
+    //       payload: {
+    //         id: nanoid(),
+    //         date: new Date().toISOString(),
+    //         title,
+    //         content,
+    //         user: userId,
+    //         reactions: {
+    //           thumbsUp: 0,
+    //           hooray: 0,
+    //           heart: 0,
+    //           rocket: 0,
+    //           eyes: 0,
+    //         },
+    //       },
+    //       meta: 'i am a meta string',
+    //     };
+    //   },
+    // },
     postUpdated(state, action) {
       const { id, title, content } = action.payload;
       let existingPost = state.posts.find((post) => post.id === id);
@@ -72,6 +82,10 @@ const postsSlice = createSlice({
         console.log('action.error.message', action.error.message);
         state.error = action.error.message;
       });
+    builder.addCase(addNewPost.fulfilled, (state, action) => {
+      console.log('action add new post', action)
+      state.posts.push(action.payload);
+    });
   },
 });
 
