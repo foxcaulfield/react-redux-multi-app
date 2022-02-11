@@ -1,0 +1,19 @@
+.wrapper {
+    display: grid;
+    /* flex-direction: row; */
+    grid-template-columns: 2fr 6fr;
+}
+
+.dialogs .item {
+    border: 3px red solid;
+    display: block;
+}
+.active{
+    border: 3px red solid;
+    display: block;
+    font-weight: 900;
+}
+.messages .item {
+    
+    border: 3px blue double
+}
