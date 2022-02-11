@@ -3,13 +3,17 @@ import { useSelector } from 'react-redux';
 import QueryNavLink from '../../components/QueryNavLink';
 import PostAuthor from './PostAuthor';
 import { selectPostsList } from './postsSlice';
+import TimeAgo from "./TimeAgo";
 
 const PostsList = () => {
   const posts = useSelector(selectPostsList);
 
-  let renderedPosts = posts.map((post) => {
-    console.log(post)
+  const orederedPosts = posts.slice().sort((a, b) => {
+    return b.date.localeCompare(a.date);
+  });
 
+  let renderedPosts = orederedPosts.map((post) => {
+    console.log('post', post)
     return (
       <article className="post-excerpt" key={post.id}>
         <h3>{post.title}</h3>
@@ -18,12 +22,14 @@ const PostsList = () => {
             (post.content.length > 100 ? '...' : '')}
         </p>
         <PostAuthor userId={post.user} />
-        <QueryNavLink to={`/readPost/${post.id}`} className="button muted-button">
+        <TimeAgo timestamp={post.date}></TimeAgo>
+        <QueryNavLink
+          to={`/readPost/${post.id}`}
+          className="button muted-button"
+        >
           View Post
         </QueryNavLink>
-        <QueryNavLink to={`/editPost/${post.id}`}>
-          Edit Post
-        </QueryNavLink>
+        <QueryNavLink to={`/editPost/${post.id}`}>Edit Post</QueryNavLink>
       </article>
     );
   });
