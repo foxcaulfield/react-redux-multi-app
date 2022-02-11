@@ -4,10 +4,10 @@ import { nanoid } from '@reduxjs/toolkit'
 import faker from 'faker'
 import seedrandom from 'seedrandom'
 import { Server as MockSocketServer } from 'mock-socket'
-import { setRandom } from 'txtgen'
-
+// import { setRandom } from 'txtgen'
 import { parseISO } from 'date-fns'
 
+console.log("WHO");
 const NUM_USERS = 3
 const POSTS_PER_USER = 3
 const RECENT_NOTIFICATIONS_DAYS = 7
@@ -21,26 +21,26 @@ const ARTIFICIAL_DELAY_MS = 2000
 // a consistent set of users / entries each time the page loads.
 // This can be reset by deleting this localStorage value,
 // or turned off by setting `useSeededRNG` to false.
-let useSeededRNG = true
+let useSeededRNG = false
 
 let rng = seedrandom()
 
-if (useSeededRNG) {
-  let randomSeedString = localStorage.getItem('randomTimestampSeed')
-  let seedDate
+// if (useSeededRNG) {
+//   let randomSeedString = localStorage.getItem('randomTimestampSeed')
+//   let seedDate
 
-  if (randomSeedString) {
-    seedDate = new Date(randomSeedString)
-  } else {
-    seedDate = new Date()
-    randomSeedString = seedDate.toISOString()
-    localStorage.setItem('randomTimestampSeed', randomSeedString)
-  }
+//   if (randomSeedString) {
+//     seedDate = new Date(randomSeedString)
+//   } else {
+//     seedDate = new Date()
+//     randomSeedString = seedDate.toISOString()
+//     localStorage.setItem('randomTimestampSeed', randomSeedString)
+//   }
 
-  rng = seedrandom(randomSeedString)
-  setRandom(rng)
-  faker.seed(seedDate.getTime())
-}
+//   rng = seedrandom(randomSeedString)
+//   setRandom(rng)
+//   faker.seed(seedDate.getTime())
+// }
 
 function getRandomInt(min, max) {
   min = Math.ceil(min)
